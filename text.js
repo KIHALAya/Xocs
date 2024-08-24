@@ -1,6 +1,7 @@
 import fm from 'front-matter';
 import { GoogleGenerativeAI } from '@google/generative-ai'; 
 import { createClient } from '@supabase/supabase-js';
+import {generateEmbedding} from './embeddings.js';
 import slugs from './slugs.js';  
 
 
@@ -34,8 +35,7 @@ const handleDoc = async(slug) => {
     const data = await parseExpoDocs(slug);
   
     // Generate the vector using the Google AI model
-    const embedding = await model.embedContent(data.body);
-    const vector = embedding.embedding.values;
+    const vector = await generateEmbedding(data.body);
 
     // Store the vector in the database
     const { error } = await supabase
