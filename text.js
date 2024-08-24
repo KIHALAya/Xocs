@@ -1,6 +1,7 @@
 import fm from 'front-matter';
 import { GoogleGenerativeAI } from '@google/generative-ai'; 
 import { createClient } from '@supabase/supabase-js';
+import slugs from './slugs.js';  
 
 
 const genAI = new GoogleGenerativeAI(process.env.GoogleAI_API_KEY);
@@ -53,5 +54,8 @@ const handleDoc = async(slug) => {
 
 
 
-handleDoc('get-started/start-developing');
+const handleAllDocs = async() => {
+    await Promise.all(slugs.map(slug => handleDoc(slug)));
+}
 
+handleAllDocs();
